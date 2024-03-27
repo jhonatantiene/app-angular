@@ -1,10 +1,112 @@
 .container {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    background: linear-gradient(to bottom, #000000, #1a0536);
-    display: flex;
+  margin: auto;
+  height: 100%;
+}
+
+.h1 {
+  color: #fff;
+  font-size: 2rem;
+}
+
+.h2 {
+  color: #e6edf5;
+  font-size: 1.5rem;
+}
+
+.p1 {
+  color: #e6edf5;
+  font-size: 1rem;
+}
+
+.divButton {
+  display: flex;
+  flex-direction: row; /* Alterado para empilhar os elementos verticalmente em dispositivos móveis */
+  padding-left: 30px;
+  gap: 10px; /* Espaçamento entre os elementos */
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.buttonUpload {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0px 2px 4px 0px gray;
+  display: flex;
+  max-width: 200px;
+  align-items: center;
+  color: black;
+  cursor: pointer;
+  transition: 150ms;
+  font-size: 18px;
+}
+
+.buttonUpload:hover {
+  background-color: #e6edf5;
+  transition: 150ms;
+}
+
+.header {
+  background: linear-gradient(to left, #12115f, #41167f);
+  height: 130px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(
+    2,
+    minmax(300px, 1fr)
+  ); /* Alterado para uma única coluna em dispositivos móveis */
+  gap: 20px;
+  height: 75%;
+  padding-left: 15px; /* Ajuste do espaçamento lateral para melhorar a visualização em dispositivos móveis */
+  padding-right: 15px; /* Ajuste do espaçamento lateral para melhorar a visualização em dispositivos móveis */
+  margin: auto;
+}
+
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffff;
+  border-radius: 10px;
+  transition: 250ms;
+  height: 100%;
+  cursor: pointer;
+  box-shadow: 0px 2px 4px 0px gray;
+}
+
+#acquisitions {
+  cursor: pointer;
+}
+
+/* Media query para dispositivos móveis com largura máxima de 600px */
+@media only screen and (max-width: 600px) {
+  .header {
+    flex-direction: column; /* Alterado para empilhar os elementos verticalmente em dispositivos móveis */
+    height: auto; /* Altura automática para acomodar conteúdo empilhado */
+    padding: 15px; /* Adicionado espaçamento */
+    text-align: center; /* Centralizar o texto */
+    justify-content: center;
+  }
+
+  .main {
+    padding-left: 10px; /* Ajuste do espaçamento lateral para melhorar a visualização em dispositivos móveis */
+    padding-right: 10px; /* Ajuste do espaçamento lateral para melhorar a visualização em dispositivos móveis */
+    gap: 70px;
+    grid-template-columns: repeat(
+      1,
+      minmax(300px, 1fr)
+    ); /* Alterado para uma única coluna em dispositivos móveis */
+  }
+
+  .block {
+    padding: 20px; /* Adicionado espaçamento interno */
     justify-content: center;
     align-items: center;
   }
-  
+}

@@ -1,7 +1,37 @@
 <div class="container">
-
-  <div>
-    <input type="file" (change)="onFileSelected($event)">
+  <div class="header">
+    <h1 class="h1">Copybase</h1>
+    <div>
+      <h2 class="h2">
+        Dashboard Dinâmico
+      </h2>
+      <p class="p1">Explorando as Tendências de MRR e Churn Rate</p>
+    </div>
   </div>
 
+  <div class="divButton">
+    <div>
+      <label class="buttonUpload" for="file">Buscar arquivo<img src="../assets/icons/upload.png"></label>
+      <input id="file" type="file" style="display: none;" (change)="onFileSelected($event)" />
+    </div>
+
+    <div *ngIf="buttonYears">
+      <mat-form-field>
+        <mat-label>Métricas por ano</mat-label>
+        <mat-select [(ngModel)]="selectedYear">
+          <mat-option *ngFor="let item of years" [value]="item" (click)="updateMrrAndChurned(item)">{{item}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>  
+  </div>
+
+  <div class="main">
+    <div class="block">
+      <canvas #mrrCanvas id="mrr" width="400" height="300"></canvas>
+    </div>
+
+    <div class="block">
+      <canvas #churnedCanvas id="churned" width="400" height="300"></canvas>
+    </div>
+  </div>
 </div>

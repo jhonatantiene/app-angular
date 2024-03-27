@@ -9,7 +9,9 @@ export class CrudService {
   constructor(private http: HttpClient) {}
   private url = 'http://localhost:3000/';
 
-  processFileCsv(file: any): Observable<object> {
-    return this.http.post(this.url + 'fileCSV', file);
+  processFileCsv(file: FormData) {
+    return this.http.post<Array<{year: string, monthlyMetrics: any[]}>>(this.url + 'fileCSV', file);
   }
 }
+
+
