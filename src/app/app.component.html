@@ -18,8 +18,8 @@
     <div *ngIf="buttonYears">
       <mat-form-field>
         <mat-label>Métricas por ano</mat-label>
-        <mat-select [(ngModel)]="selectedYear">
-          <mat-option *ngFor="let item of years" [value]="item" (click)="updateMrrAndChurned(item)">{{item}}</mat-option>
+        <mat-select [(ngModel)]="selectedYear" (ngModelChange)="updateMrrAndChurned(selectedYear)">
+          <mat-option *ngFor="let item of years" [value]="item">{{ item }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>  

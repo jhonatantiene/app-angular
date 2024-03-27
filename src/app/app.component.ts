@@ -37,7 +37,9 @@ export class AppComponent implements OnInit {
     data: number[],
     color?: string
   ) {
-    const ctx = canvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
+    const ctx = canvas.nativeElement.getContext(
+      '2d'
+    ) as CanvasRenderingContext2D;
     const chartOptions: ChartOptions = {
       responsive: true,
       plugins: {
@@ -51,12 +53,6 @@ export class AppComponent implements OnInit {
       },
     };
 
-    if (canvas === this.mrrCanvas && this.chartMrr) {
-      this.chartMrr.destroy();
-    } else if (canvas === this.churnedCanvas && this.chartChurned) {
-      this.chartChurned.destroy();
-    }
-
     const chart = new Chart(ctx, {
       type: type,
       data: {
@@ -65,18 +61,14 @@ export class AppComponent implements OnInit {
           {
             label: title,
             data: data,
-            backgroundColor: color
+            backgroundColor: color,
           },
         ],
       },
       options: chartOptions,
     });
 
-    if (canvas === this.mrrCanvas) {
-      this.chartMrr = chart;
-    } else if (canvas === this.churnedCanvas) {
-      this.chartChurned = chart;
-    }
+    return chart;
   }
 
   async onFileSelected(event: any) {
@@ -89,54 +81,57 @@ export class AppComponent implements OnInit {
     const formData: FormData = new FormData();
     formData.append('file', file);
 
-    this.crud.processFileCsv(formData).subscribe((res) => {
-      this.buttonYears = true;
-      this.file = res;
-      this.years = []
-      res.forEach((v) => {
-        this.years.push(v.year);
+    if (file.name.includes('.xlsx')) {
+      this.crud.processFileXlsx(formData).subscribe((res) => {
+        this.buttonYears = true;
+        this.file = res;
+        this.years = res.map((v: any) => v.year);
       });
-    });
+    }
+
+    if (file.name.includes('.csv')) {
+      this.crud.processFileCsv(formData).subscribe(
+        (res) => {
+          this.buttonYears = true;
+          this.file = res;
+          this.years = res.map((v: any) => v.year);
+        },
+        (error) => {
+          console.error('Error processing CSV file:', error);
+        }
+      );
+    }
   }
 
   async updateMrrAndChurned(year: string) {
-    await this.updateMrr(year);
-    await this.updateChurned(year);
-  }
+    const yearData = this.file.find((data: any) => data.year === year);
+    if (!yearData) return;
 
-  async updateMrr(year: string) {
-    const labels = [
-      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
-    ];
-    const data = [];
+    const labels = yearData.monthlyMetrics.map((metric: any) => metric.month);
+    const mrrData = yearData.monthlyMetrics.map((metric: any) => metric.mrr);
+    const churnedData = yearData.monthlyMetrics.map((metric: any) => metric.churnRate);
 
-    for (const value of this.file) {
-      if (value.year === year) {
-        for (const mrr of value.monthlyMetrics) {
-          data.push(mrr.mrr);
-        }
-        this.createChart(this.mrrCanvas, 'bar', labels, 'Monthly Recurring Revenue (MRR)', data);
-        break;
-      }
+    if (this.chartMrr) {
+      this.chartMrr.destroy();
     }
-  }
+    this.chartMrr = this.createChart(
+      this.mrrCanvas,
+      'bar',
+      labels,
+      'Monthly Recurring Revenue (MRR)',
+      mrrData
+    );
 
-  async updateChurned(year: string) {
-    const labels = [
-      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
-    ];
-    const data = [];
-
-    for (const value of this.file) {
-      if (value.year === year) {
-        for (const churn of value.monthlyMetrics) {
-          data.push(churn.churnRate);
-        }
-        this.createChart(this.churnedCanvas, 'bar', labels, 'Churn Rate', data, 'rgba(255, 0, 0, 0.432)');
-        break;
-      }
+    if (this.chartChurned) {
+      this.chartChurned.destroy();
     }
+    this.chartChurned = this.createChart(
+      this.churnedCanvas,
+      'bar',
+      labels,
+      'Churn Rate',
+      churnedData,
+      'rgba(255, 0, 0, 0.432)'
+    );
   }
 }

@@ -12,6 +12,10 @@ export class CrudService {
   processFileCsv(file: FormData) {
     return this.http.post<Array<{year: string, monthlyMetrics: any[]}>>(this.url + 'fileCSV', file);
   }
+
+  processFileXlsx(file: FormData) {
+    return this.http.post<Array<{year: string, monthlyMetrics: any[]}>>(this.url + 'fileXlsx', file);
+  }
 }
 
 
