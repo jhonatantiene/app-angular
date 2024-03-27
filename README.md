@@ -12,7 +12,7 @@ Siga estas etapas para instalar e configurar o projeto:
 
 1. Clone o repositório:
    ```
-   git clone https://github.com/seu-usuario/seu-projeto.git
+   git clone https://github.com/jhonatantiene/app-angular.git
    ```
 
 2. Instale as dependências:
@@ -29,3 +29,4 @@ Para iniciar o servidor de desenvolvimento, use o seguinte comando:
    ```
 
 Isso iniciará o servidor de desenvolvimento do Angular CLI.
+
